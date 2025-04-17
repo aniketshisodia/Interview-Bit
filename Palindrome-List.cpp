@@ -8,15 +8,43 @@
  * };
  */
 int Solution::lPalin(ListNode* A) {
-    vector<int> a;
-    while(A) {
-        a.push_back(A->val);
-        A=A->next;
+    
+    // check if no node or one node
+    if(!A || !A->next){
+        return 1;
     }
-    int i = 0 ; int j = a.size()-1;
-    while(i < j) {
-        if(a[i] != a[j]) return 0;
-        i++ , j--;
+    
+    // find the middle element
+    ListNode *slow = A, *fast = A;
+    while(fast && fast -> next) {
+        slow = slow -> next;
+        fast = fast -> next -> next;
+    }
+    
+    ListNode*prev=NULL , *curr = slow , *forw;
+    while(curr) {
+        forw = curr -> next;
+        curr -> next = prev;
+        prev = curr;
+        curr = forw;
+    }
+    
+    // compare first half and 2nd half
+    
+    // example test case -> :
+    
+    // 1 2 3 2 1 
+    // 1->2->3 and 1->2->3 bcoz odd linked list next will not be changed
+    ListNode *front=A;
+    ListNode *back = prev;
+    
+    while(back) {
+        if(front -> val != back -> val) {
+            return 0;
+        }
+        back = back -> next;
+        front = front -> next;
     }
     return 1;
+    
 }
